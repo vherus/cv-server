@@ -29,4 +29,30 @@ const ValidateExperiencePOST = z.object({
   })
 })
 
-export default ValidateExperiencePOST
+const ValidateExperiencePUT = z.object({
+  body: z.object({
+    title: z.string({
+      invalid_type_error: 'title must be a string'
+    }).optional(),
+    company: z.string({
+      invalid_type_error: 'company must be a string'
+    }).optional(),
+    dateFrom: z.string({
+      invalid_type_error: 'dateFrom must be a string'
+    }).optional(),
+    dateTo: z.string({
+      invalid_type_error: 'dateTo must be a string'
+    }).optional(),
+    description: z.string({
+      invalid_type_error: 'description must be a string'
+    }).optional(),
+    tech: z.array(z.string({ invalid_type_error: 'tech items must be strings' }), {
+      invalid_type_error: 'tech must be an array'
+    }).optional()
+  })
+})
+
+export {
+  ValidateExperiencePOST,
+  ValidateExperiencePUT
+}

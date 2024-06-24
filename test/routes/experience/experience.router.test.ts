@@ -3,17 +3,17 @@ import server from '../../../src/server'
 import ExperienceDto from '../../../src/dal/experience/ExperienceDto'
 
 describe('/experience', () => {
+  const exp: ExperienceDto = {
+    title: 'Dev',
+    company: 'Dev Business',
+    dateFrom: 'Jan 2020',
+    dateTo: 'Feb 2020',
+    description: 'A mint business',
+    tech: ['typescript', 'express']
+  }
+
   describe('POST', () => {
     it('should create an experience', async () => {
-      const exp: ExperienceDto = {
-        title: 'Dev',
-        company: 'Dev Business',
-        dateFrom: 'Jan 2020',
-        dateTo: 'Feb 2020',
-        description: 'A mint business',
-        tech: ['typescript', 'express']
-      }
-
       const response = await supertest(server).post('/experience').send(exp)
 
       expect(response.status).toBe(201)
@@ -67,6 +67,44 @@ describe('/experience', () => {
       })
 
       expect(response2.body.error[5]).toBe('body: tech items must be strings')
+    })
+  })
+
+  describe('PUT', () => {
+    it('should send a 404 when not found', async () => {
+      const response = await supertest(server).put('/experience/50').send(exp)
+
+      expect(response.status).toBe(404)
+      expect(response.body.error).toBe('experience not found')
+    })
+
+    it('should send a 400 on invalid data', async () => {
+      const req = {
+        title: 42,
+        company: true,
+        dateFrom: 400.10,
+        dateTo: { name: 'Nathan' },
+        description: [42],
+        tech: false
+      }
+
+      const response = await supertest(server).put('/experience/50').send(req)
+
+      expect(response.status).toBe(400)
+      expect(response.body.error).toEqual([
+        'body: title must be a string',
+        'body: company must be a string',
+        'body: dateFrom must be a string',
+        'body: dateTo must be a string',
+        'body: description must be a string',
+        'body: tech must be an array'
+      ])
+
+      const response2 = await supertest(server).put('/experience/50').send({
+        tech: [42]
+      })
+
+      expect(response2.body.error).toEqual(['body: tech items must be strings'])
     })
   })
 })

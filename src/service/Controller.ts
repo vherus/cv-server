@@ -37,7 +37,7 @@ export default class Controller<T extends Entity, Dto> {
 
   put(req: Request, res: Response) {
     const id = Number(req.params.id)
-    const { body }: { body: Dto } = req.body
+    const { body }: { body: Dto } = req
     const data = this.repo.update(id, body)
 
     res.status(200).json({
