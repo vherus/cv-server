@@ -9,7 +9,9 @@ import experienceRouter from './routes/experience/experience.router'
 const server: Application = express()
 
 server.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
-server.use(cors())
+server.use(cors({
+  origin: process.env.CLIENT_URL
+}))
 server.use(express.json())
 server.use('/experience', experienceRouter)
 
