@@ -12,7 +12,7 @@ describe('/experience', () => {
     tech: ['typescript', 'express']
   }
 
-  describe('POST', () => {
+  describe('POST /', () => {
     it('should create an experience', async () => {
       const response = await supertest(server).post('/experience').send(exp)
 
@@ -70,7 +70,7 @@ describe('/experience', () => {
     })
   })
 
-  describe('PUT', () => {
+  describe('PUT /:id', () => {
     it('should send a 404 when not found', async () => {
       const response = await supertest(server).put('/experience/50').send(exp)
 
@@ -105,6 +105,73 @@ describe('/experience', () => {
       })
 
       expect(response2.body.error).toEqual(['body: tech items must be strings'])
+    })
+
+    it('should 400 for invalid ids', async () => {
+      const response = await supertest(server).put('/experience/hello').send()
+
+      expect(response.status).toBe(400)
+      expect(response.body.error).toEqual(['params: id must be a number'])
+    })
+  })
+
+  describe('GET /', () => {
+    it('should get all records', async () => {
+      const response = await supertest(server).get('/experience').send()
+      
+      expect(response.status).toBe(200)
+      expect(response.body.data).toHaveLength(7)
+    })
+  })
+
+  describe('GET /:id', () => {
+    it('should get a single record', async () => {
+      const response = await supertest(server).get('/experience/1').send()
+
+      expect(response.status).toBe(200)
+      expect(response.body.data.id).toBe(1)
+      expect(Object.keys(response.body.data).length).toBeGreaterThan(2)
+    })
+
+    it('should 404 for not found ids', async () => {
+      const response = await supertest(server).get('/experience/999').send()
+
+      expect(response.status).toBe(404)
+      expect(response.body.error).toBe('experience not found')
+    })
+
+    it('should 400 for invalid ids', async () => {
+      const response = await supertest(server).get('/experience/hello').send()
+
+      expect(response.status).toBe(400)
+      expect(response.body.error).toEqual(['params: id must be a number'])
+    })
+  })
+
+  describe('DELETE /:id', () => {
+    it('should delete a record', async () => {
+      const response = await supertest(server).get('/experience/1').send()
+      expect(response.status).toBe(200)
+
+      const delResponse = await supertest(server).delete('/experience/1').send()
+      expect(delResponse.status).toBe(200)
+
+      const response2 = await supertest(server).get('/experience/1').send()
+      expect(response2.status).toBe(404)
+    })
+
+    it('should 404 for not found ids', async () => {
+      const response = await supertest(server).delete('/experience/999').send()
+
+      expect(response.status).toBe(404)
+      expect(response.body.error).toBe('experience not found')
+    })
+
+    it('should 400 for invalid ids', async () => {
+      const response = await supertest(server).delete('/experience/hello').send()
+
+      expect(response.status).toBe(400)
+      expect(response.body.error).toEqual(['params: id must be a number'])
     })
   })
 })

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { AnyZodObject, ZodError } from 'zod'
+import { AnyZodObject, ZodError, z } from 'zod'
 
 type ZodErrorsType = Record<string, [] | Record<string, []>>
 
@@ -65,5 +65,17 @@ const Validate = (schema: AnyZodObject) => {
     }
   }
 }
+
+export const ValidateID = z.object({
+  params: z.object({
+    id: z.preprocess(
+      id => Number(z.string().parse(id)),
+      z.number({
+        required_error: 'id is required',
+        invalid_type_error: 'id must be a number'
+      })
+    )
+  })
+})
 
 export default Validate
