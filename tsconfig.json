@@ -32,6 +32,8 @@
   },
   "include": ["**/*.ts"],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "jest.config.ts",
+    "test"
   ]
 }
