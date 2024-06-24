@@ -8,12 +8,12 @@ export default class ExperienceRepository extends Repository<Experience, Experie
   private idCounter: number
   private data: Map<number, Experience> = new Map()
 
-  constructor() {
+  constructor(records = experienceData) {
     super()
 
-    this.idCounter = experienceData[experienceData.length-1].id
+    this.idCounter = records.length ? records[records.length-1].id : 0
 
-    experienceData.reduce((map: Map<number, Experience>, exp: Experience) => {
+    records.reduce((map: Map<number, Experience>, exp: Experience) => {
       map.set(exp.id, exp)
       return map
     }, this.data)

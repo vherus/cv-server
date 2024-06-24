@@ -1,1 +1,0 @@
-export default class EntityConflictError extends Error {}
