@@ -27,7 +27,7 @@ export default class Controller<T extends Entity, Dto> {
   }
 
   post(req: Request, res: Response) {
-    const { body }: { body: Dto } = req.body
+    const { body }: { body: Dto } = req
     const data = this.repo.create(body)
 
     res.status(201).json({
