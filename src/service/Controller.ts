@@ -1,5 +1,5 @@
-import Entity from '@/dal/Entity'
-import Repository from '@/dal/Repository'
+import Entity from '../dal/Entity'
+import Repository from '../dal/Repository'
 import { Request, Response } from 'express'
 
 export default class Controller<T extends Entity, Dto> {

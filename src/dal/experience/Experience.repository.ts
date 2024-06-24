@@ -1,8 +1,8 @@
-import NotFoundError from "@/error/NotFoundError";
+import NotFoundError from "../../error/NotFoundError";
 import Repository from "../Repository";
 import Experience from "./Experience";
 import ExperienceDto from "./ExperienceDto";
-import experienceData from "@/data/experience";
+import experienceData from "../../data/experience";
 
 export default class ExperienceRepository extends Repository<Experience, ExperienceDto> {
   private idCounter: number

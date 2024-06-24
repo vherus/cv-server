@@ -1,4 +1,4 @@
-import Experience from "@/dal/experience/Experience"
+import Experience from "../dal/experience/Experience"
 
 const data: Experience[] = [
   {
